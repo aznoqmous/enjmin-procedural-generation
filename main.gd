@@ -2,6 +2,7 @@
 extends Node3D
 
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
+@onready var water_mesh_instance_3d: MeshInstance3D = $WaterMeshInstance3D
 
 @export var radius: float:
 	set(value):
@@ -71,7 +72,14 @@ func build():
 	var arr_mesh: = ArrayMesh.new()
 	arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh_arrays)
 	arr_mesh.regen_normal_maps()
+	
+	var surface_tool = SurfaceTool.new()
+	surface_tool.create_from(arr_mesh, 0)
+	surface_tool.generate_normals()
+	arr_mesh = surface_tool.commit()
+	
 	mesh_instance_3d.mesh = arr_mesh
+	water_mesh_instance_3d.mesh = arr_mesh
 	building = false
 	
 	mesh_instance_3d.material_override.set("shader_parameter/amplitude", amplitude)
