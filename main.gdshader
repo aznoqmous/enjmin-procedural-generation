@@ -30,17 +30,16 @@ void fragment() {
 	
 	float ddd = clamp(dot(vVertex, vNormal), 0, 1);
 	float sstep = smoothstep(min_height, height  + dot(vVertex, vNormal) / 2.0, current_height);
-	//vec4 color = lerp(base_color, height_color, sstep);
-	vec4 color = vec4(1.0);
+	vec4 color = lerp(base_color, height_color, current_height / height);
+	//vec4 color = vec4(1.0);
 	//color += step(current_height / height, texture(noise, vVertex + vec3(TIME, TIME / 2.0, TIME / 3.0) / 10.0));
 	
 	
 	ALBEDO = color.xyz;
-	float darkness = current_height;
-	ALBEDO *= pow(darkness, 0.5);
-	//ALBEDO *= vec3(pow(dot(vVertex, vNormal), 1.5));
+	//float darkness = current_height;
+	//ALBEDO *= pow(darkness, 0.5);
 	
-	float steps = 6.0;
+	float steps = 20.0;
 	ALBEDO = floor(ALBEDO * steps) / steps;
 	//ALBEDO = vNormal;
 	
