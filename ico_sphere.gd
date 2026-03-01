@@ -1,13 +1,14 @@
 @tool
 extends Node3D
-@onready var water_mesh_instance_3d: MeshInstance3D = $WaterMeshInstance3D
-@onready var cloud_mesh_instance_3d: MeshInstance3D = $CloudMeshInstance3D
-@onready var ground_mesh_instance_3d: MeshInstance3D = $GroundMeshInstance3D
-@onready var multimesh_instance_3d: MultiMeshInstance3D = $MultimeshInstance3D
+@export var water_mesh_instance_3d: MeshInstance3D
+@export var cloud_mesh_instance_3d: MeshInstance3D
+@export var ground_mesh_instance_3d: MeshInstance3D
+@export var multimesh_instance_3d: MultiMeshInstance3D
 
 @export var water_level := 1.0:
 	set(value):
 		water_level = value
+		if not ground_mesh_instance_3d: return;
 		ground_mesh_instance_3d.material_override.set("shader_parameter/min_height", value - 0.02)
 		water_mesh_instance_3d.material_override.set("shader_parameter/water_level", value)
 		ground_mesh_instance_3d.material_override.set("shader_parameter/water_level", value)
@@ -41,7 +42,9 @@ func _ready():
 	build()
 	
 func _process(delta):
-	rotate_y(delta / 50.0)
+	#rotate_y(delta / 50.0)
+	pass
+
 func get_mesh_arrays(surface: int = 0):
 	if ground_mesh_instance_3d.mesh == null:
 		return null
@@ -50,6 +53,7 @@ func get_mesh_arrays(surface: int = 0):
 	return ground_mesh_instance_3d.mesh.surface_get_arrays(surface)
 	
 func build():
+	if not multimesh_instance_3d: return;
 	current_house_index = 0
 	multimesh_instance_3d.multimesh.instance_count = 0
 	multimesh_instance_3d.multimesh.instance_count = 900
