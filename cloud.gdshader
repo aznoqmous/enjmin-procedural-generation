@@ -8,7 +8,7 @@ void vertex() {
 	float elevation = length(VERTEX);
 	cloud_elevation = texture(noise, vec3(
 		VERTEX.x / 100.0 - TIME / 200.0, 
-		VERTEX.y / 30.0 - TIME / 300.0, 
+		VERTEX.y / 100.0 - TIME / 300.0, 
 		VERTEX.z / 200.0 - TIME / 100.0
 		)
 	).x;
