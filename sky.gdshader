@@ -31,5 +31,5 @@ vec3 rotate(vec3 vert, vec3 axis, float angle) {
 void sky() {
 	vec3 eye = rotate(EYEDIR, vec3(0.0, 1.0, 0.0), TIME / 100.0);
 	COLOR = vec3(step(1.4, length(texture(noise, EYEDIR).rgb)));
-	COLOR += vec3(texture(noise, eye / 50.0).r * texture(noise, eye / 10.0).r / 20.0 * (1.0 - abs(EYEDIR.y) * 2.0));
+	COLOR += vec3(texture(noise, eye / 20.0).r * texture(noise, eye / 10.0).r / 20.0 * pow((1.0 - abs(EYEDIR.y)), 3.0));
 }

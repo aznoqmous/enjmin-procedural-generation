@@ -68,7 +68,7 @@ func build():
 		var value = 1.5 + pow(amplitude_pow, abs(noise.get_noise_3d(vert_array[vidx].x, vert_array[vidx].y, vert_array[vidx].z))) * amplitude
 		vert_array[vidx] *= value
 		if value > house_min_elevation and value < house_max_elevation:
-			create_house(vert_array[vidx])
+			create_house(vert_array[vidx], value)
 
 	#mesh_arrays[Mesh.ARRAY_TANGENT].clear()
 	#mesh_arrays[Mesh.ARRAY_NORMAL].clear()
@@ -181,16 +181,16 @@ func generate_icosphere_mesh(radius: float, subdivisions: int, flip_faces: bool 
 	return mesh
 
 var current_house_index = 0
-func create_house(pos: Vector3):
+func create_house(pos: Vector3, value):
 	if current_house_index >= multimesh_instance_3d.multimesh.instance_count: return
 	
 	var transform = Transform3D()
 	transform.origin = pos
 	transform = transform.looking_at(Vector3.ZERO, Vector3.UP)
 	transform.basis = transform.basis * Basis().scaled(Vector3(
-		randf_range(0.1, 0.5),
-		randf_range(0.1, 0.5),
-		randf_range(0.1, 1.0),
+		randf_range(0.5, 2.0) * (value - house_min_elevation),
+		randf_range(0.5, 2.0) * (value - house_min_elevation),
+		randf_range(0.5, 5.0) * (value - house_min_elevation),
 	))
 
 	multimesh_instance_3d.multimesh.set_instance_transform(current_house_index, transform)
